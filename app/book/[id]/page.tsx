@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
+import Image from "next/image";
 
 export default function BookDetails() {
   const params = useParams();
@@ -12,7 +13,7 @@ export default function BookDetails() {
 
   useEffect(() => {
     if (!id) return;
-    
+
     fetch(`https://www.googleapis.com/books/v1/volumes/${id}`)
       .then((res) => res.json())
       .then((data) => {
@@ -75,27 +76,25 @@ export default function BookDetails() {
           <div className="flex flex-col lg:flex-row gap-8 p-8">
             {/* Book Cover */}
             <div className="flex-shrink-0">
-              <div className="relative group">
-                <img
+              <div className="relative w-[300px] h-[450px]">
+                <Image
                   src={
                     info.imageLinks?.large ||
                     info.imageLinks?.medium ||
-                    info.imageLinks?.thumbnail?.replace('http:', 'https:') ||
-                    "https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=400&h=600&fit=crop"
+                    info.imageLinks?.thumbnail?.replace("http:", "https:") ||
+                    "https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=300&h=400&fit=crop"
                   }
-                  alt={info.title}
-                  className="w-full max-w-sm mx-auto lg:w-80 object-cover rounded-2xl shadow-2xl group-hover:scale-105 transition-transform duration-300"
+                  alt={info.title || "Book cover"}
+                  fill
+                  className="rounded-lg object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </div>
-              
-              {/* Rating & Reviews */}
               {info.averageRating && (
                 <div className="mt-6 text-center">
                   <div className="flex justify-center items-center gap-1 mb-2">
                     {[...Array(5)].map((_, i) => (
-                      <span 
-                        key={i} 
+                      <span
+                        key={i}
                         className={`text-xl ${i < Math.floor(info.averageRating) ? 'text-yellow-400' : 'text-gray-300'}`}
                       >
                         ⭐
@@ -134,14 +133,14 @@ export default function BookDetails() {
                       <span>Published: {info.publishedDate}</span>
                     </div>
                   )}
-                  
+
                   {info.publisher && (
                     <div className="flex items-center text-gray-600">
                       <span className="mr-2">🏢</span>
                       <span>{info.publisher}</span>
                     </div>
                   )}
-                  
+
                   {info.pageCount && (
                     <div className="flex items-center text-gray-600">
                       <span className="mr-2">📄</span>
@@ -157,14 +156,14 @@ export default function BookDetails() {
                       <span>Language: {info.language.toUpperCase()}</span>
                     </div>
                   )}
-                  
+
                   {saleInfo?.listPrice && (
                     <div className="flex items-center text-gray-600">
                       <span className="mr-2">💰</span>
                       <span>{saleInfo.listPrice.amount} {saleInfo.listPrice.currencyCode}</span>
                     </div>
                   )}
-                  
+
                   {info.printType && (
                     <div className="flex items-center text-gray-600">
                       <span className="mr-2">📖</span>
@@ -180,7 +179,7 @@ export default function BookDetails() {
                   <h3 className="font-semibold text-gray-700 mb-2">Categories</h3>
                   <div className="flex flex-wrap gap-2">
                     {info.categories.map((category: string, index: number) => (
-                      <span 
+                      <span
                         key={index}
                         className="px-3 py-1 bg-gradient-to-r from-indigo-100 to-purple-100 text-indigo-700 text-sm rounded-full border border-indigo-200"
                       >
@@ -195,10 +194,10 @@ export default function BookDetails() {
               {info.description && (
                 <div>
                   <h3 className="font-semibold text-gray-700 mb-3">Description</h3>
-                  <div 
+                  <div
                     className="prose prose-gray max-w-none text-gray-700 leading-relaxed"
-                    dangerouslySetInnerHTML={{ 
-                      __html: info.description.replace(/<br\s*\/?>/gi, '<br />') 
+                    dangerouslySetInnerHTML={{
+                      __html: info.description.replace(/<br\s*\/?>/gi, '<br />')
                     }}
                   />
                 </div>
@@ -217,7 +216,7 @@ export default function BookDetails() {
                     Preview Book
                   </a>
                 )}
-                
+
                 {saleInfo?.buyLink && (
                   <a
                     href={saleInfo.buyLink}
@@ -229,7 +228,7 @@ export default function BookDetails() {
                     Buy Book
                   </a>
                 )}
-                
+
                 {info.infoLink && (
                   <a
                     href={info.infoLink}
