@@ -91,7 +91,7 @@ export default function BookFinder() {
               <span className="text-white font-bold text-lg">📚</span>
             </div>
             <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-              BookVerse
+              BookFinder
             </h1>
           </div>
           <div className="max-w-3xl mx-auto flex flex-col sm:flex-row gap-3">
